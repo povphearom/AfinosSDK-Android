@@ -1,0 +1,15 @@
+project.ext {
+    submodules = ['database', 'auth', 'storage']
+    group = 'com.afinossdk'
+    version = '1.0.0'
+    pomdesc = 'Afinos SDK Android'
+
+    compileSdk = 26
+    targetSdk = 26
+    minSdk = 21
+
+    buildTools = '26.0.1' // Remember to also update in .travis.yml
+
+    firebaseVersion = '11.0.4'
+    supportLibraryVersion = '26.0.1'
+}

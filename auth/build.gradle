@@ -1,0 +1,77 @@
+apply plugin: 'com.android.library'
+apply from: '../library/quality/quality.gradle'
+
+android {
+    compileSdkVersion compileSdk
+    buildToolsVersion buildTools
+
+    defaultConfig {
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        vectorDrawables.useSupportLibrary = true
+        resourcePrefix "asdk_"
+    }
+
+    buildTypes {
+        release {
+            manifestPlaceholders = [enableFbLogging: true]
+
+            minifyEnabled false
+            consumerProguardFiles 'auth-proguard.pro'
+        }
+
+        debug {
+            // This is needed for tests to pass. Facebook automatically enables app logging
+            // which causes a null pointer exception while running tests.
+            manifestPlaceholders = [enableFbLogging: false]
+        }
+    }
+
+    lintOptions {
+        disable 'UnusedQuantity'
+    }
+
+    testOptions {
+        unitTests.all {
+            testLogging {
+                exceptionFormat = 'full'
+            }
+        }
+    }
+}
+
+dependencies {
+    compile "com.android.support:design:$supportLibraryVersion"
+    compile "com.android.support:customtabs:$supportLibraryVersion"
+    compile 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
+
+    compile "com.google.firebase:firebase-auth:$firebaseVersion"
+    compile "com.google.android.gms:play-services-auth:$firebaseVersion"
+
+    provided 'com.facebook.android:facebook-android-sdk:4.25.0'
+    provided("com.twitter.sdk.android:twitter-core:3.0.0@aar") { transitive = true }
+
+    // The following libraries are needed to prevent incompatibilities with the facebook
+    // library when updating com.android.support libraries:
+    compile "com.android.support:cardview-v7:$supportLibraryVersion"
+
+    testCompile 'junit:junit:4.12'
+    //noinspection GradleDynamicVersion
+    testCompile 'org.mockito:mockito-core:2.8.+'
+    testCompile 'org.robolectric:robolectric:3.4'
+    testCompile 'com.facebook.android:facebook-android-sdk:4.25.0'
+}
+
+javadoc.exclude([
+        'com/afinos/sdk/auth/provider/**',
+        'com/afinos/sdk/auth/ui/ExtraConstants',
+        'com/afinos/sdk/auth/ui/email/field_validators/**',
+        'com/afinos/sdk/auth/util/**',
+])
+
+javadoc.include([
+        'com/google/firebase/auth/**'
+])
