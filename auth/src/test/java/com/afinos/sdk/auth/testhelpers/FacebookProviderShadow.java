@@ -18,7 +18,7 @@ import android.app.Activity;
 import android.support.annotation.StyleRes;
 
 import com.facebook.login.LoginResult;
-import com.afinos.sdk.auth.AuthUI;
+import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.provider.FacebookProvider;
 import com.afinos.sdk.auth.provider.IdpProvider.IdpCallback;
@@ -46,7 +46,7 @@ public class FacebookProviderShadow {
     }
 
     @SuppressWarnings("checkstyle:methodname")
-    public void __constructor__(AuthUI.IdpConfig idpConfig, @StyleRes int theme) {}
+    public void __constructor__(Auth.IdpConfig idpConfig, @StyleRes int theme) {}
 
     public void startLogin(Activity activity) {
         onSuccess(null);

@@ -33,7 +33,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.afinos.sdk.auth.AuthUI;
+import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.R;
 import com.afinos.sdk.auth.User;
@@ -57,7 +57,7 @@ public class FacebookProvider implements IdpProvider, FacebookCallback<LoginResu
     // DO NOT USE DIRECTLY: see onSuccess(String, LoginResult) and onFailure(Bundle) below
     private IdpCallback mCallbackObject;
 
-    public FacebookProvider(AuthUI.IdpConfig idpConfig, @StyleRes int theme) {
+    public FacebookProvider(Auth.IdpConfig idpConfig, @StyleRes int theme) {
         List<String> scopes = idpConfig.getScopes();
         if (scopes == null) {
             mScopes = new ArrayList<>();

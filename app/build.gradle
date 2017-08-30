@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply from: '../core/quality/quality.gradle'
+apply from: '../library/quality/quality.gradle'
 
 android {
     compileSdkVersion compileSdk

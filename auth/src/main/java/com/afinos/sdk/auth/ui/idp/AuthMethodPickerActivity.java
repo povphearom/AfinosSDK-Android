@@ -26,8 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.afinos.sdk.auth.AuthUI;
-import com.afinos.sdk.auth.AuthUI.IdpConfig;
+import com.afinos.sdk.auth.Auth;
+import com.afinos.sdk.auth.Auth.IdpConfig;
 import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.R;
 import com.afinos.sdk.auth.provider.EmailProvider;
@@ -81,7 +81,7 @@ public class AuthMethodPickerActivity extends AppCompatBase implements IdpCallba
         populateIdpList(getFlowParams().providerInfo);
 
         int logoId = getFlowParams().logoId;
-        if (logoId == AuthUI.NO_LOGO) {
+        if (logoId == Auth.NO_LOGO) {
             findViewById(R.id.logo).setVisibility(View.GONE);
 
             ConstraintLayout layout = findViewById(R.id.root);
@@ -100,20 +100,20 @@ public class AuthMethodPickerActivity extends AppCompatBase implements IdpCallba
         mProviders = new ArrayList<>();
         for (IdpConfig idpConfig : providers) {
             switch (idpConfig.getProviderId()) {
-                case AuthUI.GOOGLE_PROVIDER:
+                case Auth.GOOGLE_PROVIDER:
                     mProviders.add(new GoogleProvider(this, idpConfig));
                     break;
-                case AuthUI.FACEBOOK_PROVIDER:
+                case Auth.FACEBOOK_PROVIDER:
                     mProviders.add(new FacebookProvider(
                             idpConfig, getFlowParams().themeId));
                     break;
-                case AuthUI.TWITTER_PROVIDER:
+                case Auth.TWITTER_PROVIDER:
                     mProviders.add(new TwitterProvider(this));
                     break;
-                case AuthUI.EMAIL_PROVIDER:
+                case Auth.EMAIL_PROVIDER:
                     mProviders.add(new EmailProvider(this, getFlowParams()));
                     break;
-                case AuthUI.PHONE_VERIFICATION_PROVIDER:
+                case Auth.PHONE_VERIFICATION_PROVIDER:
                     mProviders.add(new PhoneProvider(this, getFlowParams()));
                     break;
                 default:

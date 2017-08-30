@@ -21,7 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.afinos.sdk.auth.AuthUI;
+import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.BuildConfig;
 import com.afinos.sdk.auth.FirebaseAuthError;
 import com.afinos.sdk.auth.R;
@@ -90,7 +90,7 @@ public class PhoneVerificationActivityTest {
         Intent startIntent = PhoneVerificationActivity.createIntent(
                 RuntimeEnvironment.application,
                 TestHelper.getFlowParameters(
-                        Collections.singletonList(AuthUI.PHONE_VERIFICATION_PROVIDER)), null);
+                        Collections.singletonList(Auth.PHONE_VERIFICATION_PROVIDER)), null);
         return Robolectric.buildActivity(PhoneVerificationActivity.class, startIntent)
                 .create(new Bundle()).start().visible().get();
     }
@@ -111,7 +111,7 @@ public class PhoneVerificationActivityTest {
         Intent startIntent = PhoneVerificationActivity.createIntent(
                 RuntimeEnvironment.application,
                 TestHelper.getFlowParameters(
-                        Collections.singletonList(AuthUI.PHONE_VERIFICATION_PROVIDER)),
+                        Collections.singletonList(Auth.PHONE_VERIFICATION_PROVIDER)),
                 YE_RAW_PHONE);
 
         mActivity = Robolectric.buildActivity(PhoneVerificationActivity.class, startIntent)

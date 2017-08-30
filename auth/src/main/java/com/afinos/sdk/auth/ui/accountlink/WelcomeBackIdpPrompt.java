@@ -26,7 +26,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afinos.sdk.auth.AuthUI.IdpConfig;
+import com.afinos.sdk.auth.Auth.IdpConfig;
 import com.afinos.sdk.auth.ErrorCodes;
 import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.R;

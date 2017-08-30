@@ -16,8 +16,8 @@ package com.afinos.sdk.auth.testhelpers;
 
 import android.content.Context;
 
-import com.afinos.sdk.auth.AuthUI;
-import com.afinos.sdk.auth.AuthUI.IdpConfig;
+import com.afinos.sdk.auth.Auth;
+import com.afinos.sdk.auth.Auth.IdpConfig;
 import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.ui.FlowParameters;
 import com.google.firebase.FirebaseApp;
@@ -73,8 +73,8 @@ public class TestHelper {
         return new FlowParameters(
                 FIREBASE_APP_NAME,
                 idpConfigs,
-                AuthUI.getDefaultTheme(),
-                AuthUI.NO_LOGO,
+                Auth.getDefaultTheme(),
+                Auth.NO_LOGO,
                 null  /* tosUrl */,
                 null  /* privacyPolicyUrl */,
                 true  /* credentialPickerEnabled */,

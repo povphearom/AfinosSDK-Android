@@ -9,7 +9,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 
-import com.afinos.sdk.auth.AuthUI;
+import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.ui.FragmentBase;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.IdentityProviders;
@@ -44,7 +44,7 @@ public abstract class SmartLockBase<R extends Result> extends FragmentBase imple
      * Translate a Firebase Auth provider ID (such as {@link GoogleAuthProvider#PROVIDER_ID}) to a
      * Credentials API account type (such as {@link IdentityProviders#GOOGLE}).
      */
-    public static String providerIdToAccountType(@AuthUI.SupportedProvider @NonNull String providerId) {
+    public static String providerIdToAccountType(@Auth.SupportedProvider @NonNull String providerId) {
         switch (providerId) {
             case GoogleAuthProvider.PROVIDER_ID:
                 return IdentityProviders.GOOGLE;
@@ -63,7 +63,7 @@ public abstract class SmartLockBase<R extends Result> extends FragmentBase imple
         }
     }
 
-    @AuthUI.SupportedProvider
+    @Auth.SupportedProvider
     public static String accountTypeToProviderId(@NonNull String accountType) {
         switch (accountType) {
             case IdentityProviders.GOOGLE:
@@ -90,7 +90,7 @@ public abstract class SmartLockBase<R extends Result> extends FragmentBase imple
         List<Credential> credentials = new ArrayList<>();
         for (UserInfo userInfo : user.getProviderData()) {
             // Get provider ID from Firebase Auth
-            @AuthUI.SupportedProvider String providerId = userInfo.getProviderId();
+            @Auth.SupportedProvider String providerId = userInfo.getProviderId();
 
             // Convert to Credentials API account type
             String accountType = providerIdToAccountType(providerId);

@@ -53,7 +53,7 @@ public class User implements Parcelable {
     }
 
     @NonNull
-    @AuthUI.SupportedProvider
+    @Auth.SupportedProvider
     public String getProviderId() {
         return mProviderId;
     }
@@ -131,7 +131,7 @@ public class User implements Parcelable {
         private String mName;
         private Uri mPhotoUri;
 
-        public Builder(@AuthUI.SupportedProvider @NonNull String providerId,
+        public Builder(@Auth.SupportedProvider @NonNull String providerId,
                        @Nullable String email) {
             mProviderId = providerId;
             mEmail = email;

@@ -32,8 +32,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afinos.demo.R;
-import com.afinos.sdk.auth.AuthUI;
-import com.afinos.sdk.auth.AuthUI.IdpConfig;
+import com.afinos.sdk.auth.Auth;
+import com.afinos.sdk.auth.Auth.IdpConfig;
 import com.afinos.sdk.auth.IdpResponse;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -116,7 +116,7 @@ public class SignedInActivity extends AppCompatActivity {
 
     @OnClick(R.id.sign_out)
     public void signOut() {
-        AuthUI.getInstance()
+        Auth.getInstance()
                 .signOut(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -146,7 +146,7 @@ public class SignedInActivity extends AppCompatActivity {
     }
 
     private void deleteAccount() {
-        AuthUI.getInstance()
+        Auth.getInstance()
                 .delete(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

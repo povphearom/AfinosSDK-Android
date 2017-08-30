@@ -19,7 +19,7 @@ import android.support.design.widget.TextInputLayout;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.afinos.sdk.auth.AuthUI;
+import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.BuildConfig;
 import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.R;
@@ -62,7 +62,7 @@ public class WelcomeBackPasswordPromptTest {
     private WelcomeBackPasswordPrompt createActivity() {
         Intent startIntent = WelcomeBackPasswordPrompt.createIntent(
                 RuntimeEnvironment.application,
-                TestHelper.getFlowParameters(Collections.singletonList(AuthUI.EMAIL_PROVIDER)),
+                TestHelper.getFlowParameters(Collections.singletonList(Auth.EMAIL_PROVIDER)),
                 new IdpResponse.Builder(
                         new User.Builder(EmailAuthProvider.PROVIDER_ID, TestConstants.EMAIL)
                                 .build())

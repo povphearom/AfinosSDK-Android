@@ -13,7 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.afinos.sdk.auth.AuthUI;
+import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.R;
 import com.afinos.sdk.auth.User;
@@ -25,7 +25,6 @@ import com.afinos.sdk.auth.ui.idp.AuthMethodPickerActivity;
 import com.afinos.sdk.auth.ui.phone.PhoneVerificationActivity;
 import com.afinos.sdk.auth.util.GoogleApiHelper;
 import com.afinos.sdk.auth.util.GoogleSignInHelper;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.CredentialRequest;
 import com.google.android.gms.auth.api.credentials.CredentialRequestResult;
@@ -99,7 +98,7 @@ public class SignInDelegate extends SmartLockBase<CredentialRequestResult> {
 
             mGoogleApiClient = new GoogleApiClient.Builder(getContext().getApplicationContext())
                     .addConnectionCallbacks(this)
-                    .addApi(Auth.CREDENTIALS_API)
+                    .addApi(com.google.android.gms.auth.api.Auth.CREDENTIALS_API)
                     .enableAutoManage(getActivity(), GoogleApiHelper.getSafeAutoManageId(), this)
                     .build();
             mGoogleApiClient.connect();
@@ -185,8 +184,8 @@ public class SignInDelegate extends SmartLockBase<CredentialRequestResult> {
 
     private List<String> getSupportedAccountTypes() {
         List<String> accounts = new ArrayList<>();
-        for (AuthUI.IdpConfig idpConfig : getFlowParams().providerInfo) {
-            @AuthUI.SupportedProvider String providerId = idpConfig.getProviderId();
+        for (Auth.IdpConfig idpConfig : getFlowParams().providerInfo) {
+            @Auth.SupportedProvider String providerId = idpConfig.getProviderId();
             if (providerId.equals(GoogleAuthProvider.PROVIDER_ID)
                     || providerId.equals(FacebookAuthProvider.PROVIDER_ID)
                     || providerId.equals(TwitterAuthProvider.PROVIDER_ID)) {
@@ -234,7 +233,7 @@ public class SignInDelegate extends SmartLockBase<CredentialRequestResult> {
 
     private void startAuthMethodChoice() {
         FlowParameters flowParams = getFlowParams();
-        List<AuthUI.IdpConfig> idpConfigs = flowParams.providerInfo;
+        List<Auth.IdpConfig> idpConfigs = flowParams.providerInfo;
 
         // If there is only one provider selected, launch the flow directly
         if (idpConfigs.size() == 1) {

@@ -25,7 +25,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
-import com.afinos.sdk.auth.AuthUI;
+import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.ErrorCodes;
 import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.User;
@@ -101,8 +101,8 @@ public class IdpSignInContainer extends FragmentBase implements IdpCallback {
         User user = User.getUser(getArguments());
         String provider = user.getProviderId();
 
-        AuthUI.IdpConfig providerConfig = null;
-        for (AuthUI.IdpConfig config : getFlowParams().providerInfo) {
+        Auth.IdpConfig providerConfig = null;
+        for (Auth.IdpConfig config : getFlowParams().providerInfo) {
             if (config.getProviderId().equalsIgnoreCase(provider)) {
                 providerConfig = config;
                 break;

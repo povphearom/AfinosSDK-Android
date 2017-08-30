@@ -32,8 +32,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.afinos.demo.R;
-import com.afinos.sdk.auth.AuthUI;
-import com.afinos.sdk.auth.AuthUI.IdpConfig;
+import com.afinos.sdk.auth.Auth;
+import com.afinos.sdk.auth.Auth.IdpConfig;
 import com.afinos.sdk.auth.ErrorCodes;
 import com.afinos.sdk.auth.IdpResponse;
 import com.google.android.gms.common.Scopes;
@@ -198,7 +198,7 @@ public class AuthUiActivity extends AppCompatActivity {
     @OnClick(R.id.sign_in)
     public void signIn(View view) {
         startActivityForResult(
-                AuthUI.getInstance().createSignInIntentBuilder()
+                Auth.getInstance().createSignInIntentBuilder()
                         .setTheme(getSelectedTheme())
                         .setLogo(getSelectedLogo())
                         .setAvailableProviders(getSelectedProviders())
@@ -285,7 +285,7 @@ public class AuthUiActivity extends AppCompatActivity {
     @StyleRes
     private int getSelectedTheme() {
         if (mUseDefaultTheme.isChecked()) {
-            return AuthUI.getDefaultTheme();
+            return Auth.getDefaultTheme();
         }
 
         if (mUsePurpleTheme.isChecked()) {
@@ -307,7 +307,7 @@ public class AuthUiActivity extends AppCompatActivity {
         } else if (mGoogleLogo.isChecked()) {
             return R.drawable.ic_googleg_color_144dp;
         }
-        return AuthUI.NO_LOGO;
+        return Auth.NO_LOGO;
     }
 
     @MainThread
@@ -316,29 +316,29 @@ public class AuthUiActivity extends AppCompatActivity {
 
         if (mUseGoogleProvider.isChecked()) {
             selectedProviders.add(
-                    new IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER)
+                    new IdpConfig.Builder(Auth.GOOGLE_PROVIDER)
                             .setPermissions(getGooglePermissions())
                             .build());
         }
 
         if (mUseFacebookProvider.isChecked()) {
             selectedProviders.add(
-                    new IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER)
+                    new IdpConfig.Builder(Auth.FACEBOOK_PROVIDER)
                             .setPermissions(getFacebookPermissions())
                             .build());
         }
 
         if (mUseTwitterProvider.isChecked()) {
-            selectedProviders.add(new IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build());
+            selectedProviders.add(new IdpConfig.Builder(Auth.TWITTER_PROVIDER).build());
         }
 
         if (mUseEmailProvider.isChecked()) {
-            selectedProviders.add(new IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build());
+            selectedProviders.add(new IdpConfig.Builder(Auth.EMAIL_PROVIDER).build());
         }
 
         if (mUsePhoneProvider.isChecked()) {
             selectedProviders.add(
-                    new IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build());
+                    new IdpConfig.Builder(Auth.PHONE_VERIFICATION_PROVIDER).build());
         }
 
         return selectedProviders;

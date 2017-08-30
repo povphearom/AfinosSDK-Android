@@ -23,7 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 
-import com.afinos.sdk.auth.AuthUI.IdpConfig;
+import com.afinos.sdk.auth.Auth.IdpConfig;
 import com.afinos.sdk.auth.util.Preconditions;
 
 import java.util.Collections;

@@ -25,7 +25,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.afinos.sdk.auth.AuthUI.IdpConfig;
+import com.afinos.sdk.auth.Auth.IdpConfig;
 import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.R;
 import com.afinos.sdk.auth.User;

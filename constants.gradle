@@ -1,5 +1,5 @@
 project.ext {
-    submodules = ['database', 'auth', 'storage']
+    submodules = ['database', 'auth', 'storage','core']
     group = 'com.afinossdk'
     version = '1.0.0'
     pomdesc = 'Afinos SDK Android'

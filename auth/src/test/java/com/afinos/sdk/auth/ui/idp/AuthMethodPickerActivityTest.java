@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.afinos.sdk.auth.AuthUI;
+import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.BuildConfig;
 import com.afinos.sdk.auth.R;
 import com.afinos.sdk.auth.testhelpers.AuthHelperShadow;
@@ -68,11 +68,11 @@ public class AuthMethodPickerActivityTest {
     @Test
     public void testAllProvidersArePopulated() {
         List<String> providers = Arrays.asList(
-                AuthUI.FACEBOOK_PROVIDER,
-                AuthUI.GOOGLE_PROVIDER,
-                AuthUI.TWITTER_PROVIDER,
-                AuthUI.EMAIL_PROVIDER,
-                AuthUI.PHONE_VERIFICATION_PROVIDER);
+                Auth.FACEBOOK_PROVIDER,
+                Auth.GOOGLE_PROVIDER,
+                Auth.TWITTER_PROVIDER,
+                Auth.EMAIL_PROVIDER,
+                Auth.PHONE_VERIFICATION_PROVIDER);
 
         AuthMethodPickerActivity authMethodPickerActivity = createActivity(providers);
 
@@ -85,7 +85,7 @@ public class AuthMethodPickerActivityTest {
 
     @Test
     public void testEmailLoginFlow() {
-        List<String> providers = Arrays.asList(AuthUI.EMAIL_PROVIDER);
+        List<String> providers = Arrays.asList(Auth.EMAIL_PROVIDER);
 
         AuthMethodPickerActivity authMethodPickerActivity = createActivity(providers);
 
@@ -101,7 +101,7 @@ public class AuthMethodPickerActivityTest {
 
     @Test
     public void testPhoneLoginFlow() {
-        List<String> providers = Arrays.asList(AuthUI.PHONE_VERIFICATION_PROVIDER);
+        List<String> providers = Arrays.asList(Auth.PHONE_VERIFICATION_PROVIDER);
 
         AuthMethodPickerActivity authMethodPickerActivity = createActivity(providers);
 
@@ -126,7 +126,7 @@ public class AuthMethodPickerActivityTest {
         when(AuthHelperShadow.getFirebaseAuth().signInWithCredential((AuthCredential) any()))
                 .thenReturn(new AutoCompleteTask<>(FakeAuthResult.INSTANCE, true, null));
 
-        List<String> providers = Arrays.asList(AuthUI.FACEBOOK_PROVIDER);
+        List<String> providers = Arrays.asList(Auth.FACEBOOK_PROVIDER);
 
         AuthMethodPickerActivity authMethodPickerActivity = createActivity(providers);
 
@@ -134,7 +134,7 @@ public class AuthMethodPickerActivityTest {
         assertNotNull(facebookButton);
         facebookButton.performClick();
 
-        verifySmartLockSave(AuthUI.FACEBOOK_PROVIDER, TestConstants.EMAIL, null);
+        verifySmartLockSave(Auth.FACEBOOK_PROVIDER, TestConstants.EMAIL, null);
     }
 
     @Test
@@ -143,7 +143,7 @@ public class AuthMethodPickerActivityTest {
         // initialize mocks
         reset(AuthHelperShadow.getSaveSmartLockInstance(null));
 
-        List<String> providers = Arrays.asList(AuthUI.GOOGLE_PROVIDER);
+        List<String> providers = Arrays.asList(Auth.GOOGLE_PROVIDER);
 
         AuthMethodPickerActivity authMethodPickerActivity = createActivity(providers);
 
@@ -158,13 +158,13 @@ public class AuthMethodPickerActivityTest {
         assertNotNull(googleButton);
         googleButton.performClick();
 
-        verifySmartLockSave(AuthUI.GOOGLE_PROVIDER, TestConstants.EMAIL, null);
+        verifySmartLockSave(Auth.GOOGLE_PROVIDER, TestConstants.EMAIL, null);
     }
 
     @Test
     @Config(shadows = {AuthHelperShadow.class})
     public void testTwitterLoginFlowStarts() {
-        List<String> providers = Arrays.asList(AuthUI.TWITTER_PROVIDER);
+        List<String> providers = Arrays.asList(Auth.TWITTER_PROVIDER);
 
         AuthMethodPickerActivity authMethodPickerActivity = createActivity(providers);
 

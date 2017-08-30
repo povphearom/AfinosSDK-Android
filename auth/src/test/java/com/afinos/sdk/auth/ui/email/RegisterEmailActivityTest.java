@@ -19,7 +19,7 @@ import android.support.design.widget.TextInputLayout;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.afinos.sdk.auth.AuthUI;
+import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.BuildConfig;
 import com.afinos.sdk.auth.R;
 import com.afinos.sdk.auth.User;
@@ -54,7 +54,7 @@ public class RegisterEmailActivityTest {
     private RegisterEmailActivity createActivity() {
         Intent startIntent = RegisterEmailActivity.createIntent(
                 RuntimeEnvironment.application,
-                TestHelper.getFlowParameters(Collections.singletonList(AuthUI.EMAIL_PROVIDER)));
+                TestHelper.getFlowParameters(Collections.singletonList(Auth.EMAIL_PROVIDER)));
 
         return Robolectric.buildActivity(RegisterEmailActivity.class, startIntent)
                 .create()

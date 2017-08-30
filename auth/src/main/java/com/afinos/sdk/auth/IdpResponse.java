@@ -80,10 +80,10 @@ public class IdpResponse implements Parcelable {
     }
 
     /**
-     * Get the type of provider. e.g. {@link AuthUI#GOOGLE_PROVIDER}
+     * Get the type of provider. e.g. {@link Auth#GOOGLE_PROVIDER}
      */
     @NonNull
-    @AuthUI.SupportedProvider
+    @Auth.SupportedProvider
     public String getProviderType() {
         return mUser.getProviderId();
     }

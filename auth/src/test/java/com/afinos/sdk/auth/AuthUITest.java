@@ -14,8 +14,8 @@
 
 package com.afinos.sdk.auth;
 
-import com.afinos.sdk.auth.AuthUI.IdpConfig;
-import com.afinos.sdk.auth.AuthUI.SignInIntentBuilder;
+import com.afinos.sdk.auth.Auth.IdpConfig;
+import com.afinos.sdk.auth.Auth.SignInIntentBuilder;
 import com.afinos.sdk.auth.testhelpers.TestConstants;
 import com.afinos.sdk.auth.testhelpers.TestHelper;
 import com.afinos.sdk.auth.ui.ExtraConstants;
@@ -45,31 +45,31 @@ public class AuthUITest {
 
     @Test
     public void testCreateStartIntent_shouldHaveEmailAsDefaultProvider() {
-        FlowParameters flowParameters = AuthUI
+        FlowParameters flowParameters = Auth
                 .getInstance(mFirebaseApp)
                 .createSignInIntentBuilder()
                 .build()
                 .getParcelableExtra(ExtraConstants.EXTRA_FLOW_PARAMS);
         assertEquals(1, flowParameters.providerInfo.size());
-        assertEquals(AuthUI.EMAIL_PROVIDER, flowParameters.providerInfo.get(0).getProviderId());
+        assertEquals(Auth.EMAIL_PROVIDER, flowParameters.providerInfo.get(0).getProviderId());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateStartIntent_shouldOnlyAllowOneInstanceOfAnIdp() {
         SignInIntentBuilder startIntent =
-                AuthUI.getInstance(mFirebaseApp).createSignInIntentBuilder();
+                Auth.getInstance(mFirebaseApp).createSignInIntentBuilder();
         startIntent.setAvailableProviders(
-                Arrays.asList(new IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                              new IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()));
+                Arrays.asList(new IdpConfig.Builder(Auth.EMAIL_PROVIDER).build(),
+                              new IdpConfig.Builder(Auth.EMAIL_PROVIDER).build()));
     }
 
     @Test
     public void testCreatingStartIntent() {
-        FlowParameters flowParameters = AuthUI.getInstance(mFirebaseApp).createSignInIntentBuilder()
+        FlowParameters flowParameters = Auth.getInstance(mFirebaseApp).createSignInIntentBuilder()
                 .setAvailableProviders(
-                        Arrays.asList(new IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                      new IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                                      new IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                        Arrays.asList(new IdpConfig.Builder(Auth.EMAIL_PROVIDER).build(),
+                                      new IdpConfig.Builder(Auth.GOOGLE_PROVIDER).build(),
+                                      new IdpConfig.Builder(Auth.FACEBOOK_PROVIDER).build()))
                 .setTosUrl(TestConstants.TOS_URL)
                 .setPrivacyPolicyUrl(TestConstants.PRIVACY_URL)
                 .build()
@@ -79,6 +79,6 @@ public class AuthUITest {
         assertEquals(mFirebaseApp.getName(), flowParameters.appName);
         assertEquals(TestConstants.TOS_URL, flowParameters.termsOfServiceUrl);
         assertEquals(TestConstants.PRIVACY_URL, flowParameters.privacyPolicyUrl);
-        assertEquals(AuthUI.getDefaultTheme(), flowParameters.themeId);
+        assertEquals(Auth.getDefaultTheme(), flowParameters.themeId);
     }
 }

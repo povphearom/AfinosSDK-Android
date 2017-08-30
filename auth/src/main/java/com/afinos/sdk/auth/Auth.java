@@ -60,14 +60,14 @@ import java.util.Set;
 /**
  * The entry point to the AuthUI authentication flow, and related utility methods. If your
  * application uses the default {@link FirebaseApp} instance, an AuthUI instance can be retrieved
- * simply by calling {@link AuthUI#getInstance()}. If an alternative app instance is in use, call
- * {@link AuthUI#getInstance(FirebaseApp)} instead, passing the appropriate app instance.
+ * simply by calling {@link Auth#getInstance()}. If an alternative app instance is in use, call
+ * {@link Auth#getInstance(FirebaseApp)} instead, passing the appropriate app instance.
  * <p>
  * <p>
  * See the <a href="https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md#table-of-contents">README</a>
  * for examples on how to get started with FirebaseUI Auth.
  */
-public class AuthUI {
+public class Auth {
     @StringDef({
                        EmailAuthProvider.PROVIDER_ID, EMAIL_PROVIDER,
                        PhoneAuthProvider.PROVIDER_ID, PHONE_VERIFICATION_PROVIDER,
@@ -121,35 +121,35 @@ public class AuthUI {
                     PHONE_VERIFICATION_PROVIDER
             )));
 
-    private static final IdentityHashMap<FirebaseApp, AuthUI> INSTANCES = new IdentityHashMap<>();
+    private static final IdentityHashMap<FirebaseApp, Auth> INSTANCES = new IdentityHashMap<>();
 
     private final FirebaseApp mApp;
     private final FirebaseAuth mAuth;
 
-    private AuthUI(FirebaseApp app) {
+    private Auth(FirebaseApp app) {
         mApp = app;
         mAuth = FirebaseAuth.getInstance(mApp);
     }
 
     /**
-     * Retrieves the {@link AuthUI} instance associated with the default app, as returned by {@code
+     * Retrieves the {@link Auth} instance associated with the default app, as returned by {@code
      * FirebaseApp.getInstance()}.
      *
      * @throws IllegalStateException if the default app is not initialized.
      */
-    public static AuthUI getInstance() {
+    public static Auth getInstance() {
         return getInstance(FirebaseApp.getInstance());
     }
 
     /**
-     * Retrieves the {@link AuthUI} instance associated the the specified app.
+     * Retrieves the {@link Auth} instance associated the the specified app.
      */
-    public static AuthUI getInstance(FirebaseApp app) {
-        AuthUI authUi;
+    public static Auth getInstance(FirebaseApp app) {
+        Auth authUi;
         synchronized (INSTANCES) {
             authUi = INSTANCES.get(app);
             if (authUi == null) {
-                authUi = new AuthUI(app);
+                authUi = new Auth(app);
                 INSTANCES.put(app, authUi);
             }
         }
@@ -343,7 +343,7 @@ public class AuthUI {
              * Builds the configuration parameters for an identity provider.
              *
              * @param providerId An ID of one of the supported identity providers. e.g. {@link
-             *                   AuthUI#GOOGLE_PROVIDER}. See {@link AuthUI#SUPPORTED_PROVIDERS} for
+             *                   Auth#GOOGLE_PROVIDER}. See {@link Auth#SUPPORTED_PROVIDERS} for
              *                   the complete list of supported Identity providers
              */
             public Builder(@SupportedProvider @NonNull String providerId) {
