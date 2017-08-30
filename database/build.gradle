@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply from: '../library/quality/quality.gradle'
+apply from: '../core/quality/quality.gradle'
 check.dependsOn 'compileDebugAndroidTestJavaWithJavac'
 
 android {

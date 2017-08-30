@@ -32,9 +32,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afinos.demo.R;
-import com.afinos.skd.auth.AuthUI;
-import com.afinos.skd.auth.AuthUI.IdpConfig;
-import com.afinos.skd.auth.IdpResponse;
+import com.afinos.sdk.auth.AuthUI;
+import com.afinos.sdk.auth.AuthUI.IdpConfig;
+import com.afinos.sdk.auth.IdpResponse;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

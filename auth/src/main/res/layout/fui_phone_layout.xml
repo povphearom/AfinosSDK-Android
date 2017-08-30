@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.afinos.skd.auth.ui.phone.CountryListSpinner
+        <com.afinos.sdk.auth.ui.phone.CountryListSpinner
             android:id="@+id/country_list"
             style="@style/FirebaseUI.CountrySpinner" />
 

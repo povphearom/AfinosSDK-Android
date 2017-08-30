@@ -1,7 +1,7 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.afinos.skd.auth">
+    package="com.afinos.sdk.auth">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,39 +25,39 @@
             android:value="${enableFbLogging}" />
 
         <activity
-            android:name="com.afinos.skd.auth.KickoffActivity"
+            android:name="com.afinos.sdk.auth.KickoffActivity"
             android:label=""
             android:exported="false"
             android:theme="@style/FirebaseUI.Transparent" />
 
         <activity
-            android:name="com.afinos.skd.auth.ui.email.RecoverPasswordActivity"
+            android:name="com.afinos.sdk.auth.ui.email.RecoverPasswordActivity"
             android:label="@string/fui_title_recover_password_activity"
             android:exported="false"/>
 
         <activity
-            android:name="com.afinos.skd.auth.ui.email.RegisterEmailActivity"
+            android:name="com.afinos.sdk.auth.ui.email.RegisterEmailActivity"
             android:label="@string/fui_sign_in_default"
             android:exported="false"/>
 
         <activity
-            android:name="com.afinos.skd.auth.ui.phone.PhoneVerificationActivity"
+            android:name="com.afinos.sdk.auth.ui.phone.PhoneVerificationActivity"
             android:label="@string/fui_sign_in_with_phone_number"
             android:windowSoftInputMode="stateAlwaysVisible"
             android:exported="false"/>
 
         <activity
-            android:name="com.afinos.skd.auth.ui.accountlink.WelcomeBackIdpPrompt"
+            android:name="com.afinos.sdk.auth.ui.accountlink.WelcomeBackIdpPrompt"
             android:label="@string/fui_title_welcome_back_idp_prompt"
             android:exported="false"/>
 
         <activity
-            android:name="com.afinos.skd.auth.ui.accountlink.WelcomeBackPasswordPrompt"
+            android:name="com.afinos.sdk.auth.ui.accountlink.WelcomeBackPasswordPrompt"
             android:label="@string/fui_title_welcome_back_password_prompt"
             android:exported="false"/>
 
         <activity
-            android:name="com.afinos.skd.auth.ui.idp.AuthMethodPickerActivity"
+            android:name="com.afinos.sdk.auth.ui.idp.AuthMethodPickerActivity"
             android:label="@string/fui_default_toolbar_title"
             android:exported="false"/>
 

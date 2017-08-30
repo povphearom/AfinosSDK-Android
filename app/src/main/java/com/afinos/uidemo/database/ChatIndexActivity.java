@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.afinos.demo.R;
-import com.afinos.skd.database.FirebaseIndexRecyclerAdapter;
-import com.afinos.skd.database.FirebaseRecyclerAdapter;
+import com.afinos.sdk.database.FirebaseIndexRecyclerAdapter;
+import com.afinos.sdk.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

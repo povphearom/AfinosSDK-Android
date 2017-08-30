@@ -29,7 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afinos.demo.R;
-import com.afinos.skd.database.FirebaseRecyclerAdapter;
+import com.afinos.sdk.database.FirebaseRecyclerAdapter;
 import com.afinos.uidemo.util.SignInResultNotifier;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;

@@ -28,7 +28,7 @@
             android:textColor="@color/fui_linkColor"
             tools:ignore="SelectableText" />
 
-        <com.afinos.skd.auth.ui.phone.SpacedEditText
+        <com.afinos.sdk.auth.ui.phone.SpacedEditText
             android:id="@+id/confirmation_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

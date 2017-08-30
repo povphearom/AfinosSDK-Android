@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afinos.demo.R;
-import com.afinos.skd.storage.images.FirebaseImageLoader;
+import com.afinos.sdk.storage.images.FirebaseImageLoader;
 import com.afinos.uidemo.util.SignInResultNotifier;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
