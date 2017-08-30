@@ -26,7 +26,7 @@ import java.io.InputStream;
  *         .into(iv);
  * </pre>
  */
-public class FirebaseImageLoader implements StreamModelLoader<StorageReference> {
+public class StorageImageLoader implements StreamModelLoader<StorageReference> {
 
     private static final String TAG = "FirebaseImageLoader";
 

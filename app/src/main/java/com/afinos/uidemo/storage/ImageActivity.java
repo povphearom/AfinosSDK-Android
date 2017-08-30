@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afinos.demo.R;
-import com.afinos.sdk.storage.images.FirebaseImageLoader;
+import com.afinos.sdk.storage.images.StorageImageLoader;
 import com.afinos.uidemo.util.SignInResultNotifier;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -132,7 +132,7 @@ public class ImageActivity extends AppCompatActivity implements EasyPermissions.
     protected void downloadDirect() {
         // Download directly from StorageReference using Glide
         Glide.with(this)
-                .using(new FirebaseImageLoader())
+                .using(new StorageImageLoader())
                 .load(mImageRef)
                 .centerCrop()
                 .crossFade()
