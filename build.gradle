@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.google.gms:google-services:3.1.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
 }
 
@@ -40,6 +40,7 @@ allprojects { project ->
     // Get constants, this is where we store things
     // like the list of submodules or the version
     project.apply from: "$rootDir/constants.gradle"
+    project.apply plugin: 'com.github.dcendents.android-maven'
 
     def isLibrary = 'library'.equals(project.name)
     def isSubmodule = submodules.contains(project.name)
