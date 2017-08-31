@@ -44,6 +44,7 @@ android {
 }
 
 dependencies {
+    compile project(':core')
     compile "com.android.support:design:$supportLibraryVersion"
     compile "com.android.support:customtabs:$supportLibraryVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
