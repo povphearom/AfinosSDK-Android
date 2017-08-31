@@ -24,8 +24,6 @@ android {
 
 dependencies {
     compile project(':core')
-//    compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
-    // Needed to override play services
     compile "com.android.support:support-v4:$supportLibraryVersion"
 
     compile 'android.arch.lifecycle:runtime:1.0.0-alpha8'

@@ -16,8 +16,25 @@ android {
 
     buildTypes {
         release {
+            manifestPlaceholders = [enableFbLogging: true]
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+        }
+
+        debug {
+            manifestPlaceholders = [enableFbLogging: false]
+        }
+    }
+
+    lintOptions {
+        disable 'UnusedQuantity'
+    }
+
+    testOptions {
+        unitTests.all {
+            testLogging {
+                exceptionFormat = 'full'
+            }
         }
     }
 
