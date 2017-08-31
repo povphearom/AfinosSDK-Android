@@ -40,15 +40,14 @@ allprojects { project ->
     // Get constants, this is where we store things
     // like the list of submodules or the version
     project.apply from: "$rootDir/constants.gradle"
-    project.apply plugin: 'com.github.dcendents.android-maven'
 
     def isLibrary = 'library'.equals(project.name)
     def isSubmodule = submodules.contains(project.name)
 
     if (isSubmodule || isLibrary) {
-
         // So that we can resolve 'android' variable
         project.apply plugin: 'com.android.library'
+        project.apply plugin: 'com.github.dcendents.android-maven'
         android {
             compileSdkVersion compileSdk
             buildToolsVersion buildTools
