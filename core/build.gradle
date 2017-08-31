@@ -48,3 +48,11 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
 }
+
+javadoc.exclude([
+        'com/afinos/sdk/core/api/**',
+        'com/afinos/sdk/core/auth/**',
+        'com/afinos/sdk/core/bind/**',
+        'com/afinos/sdk/core/db/**',
+        'com/afinos/sdk/core/utils/**',
+])
