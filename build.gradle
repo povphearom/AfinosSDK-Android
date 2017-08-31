@@ -91,6 +91,5 @@ allprojects {
             // Convenience task to prepare everything we need for releases
             task prepareArtifacts(dependsOn: [javadocJar, sourcesJar, assembleRelease, pomTask]) {}
         }
-
     }
 }
