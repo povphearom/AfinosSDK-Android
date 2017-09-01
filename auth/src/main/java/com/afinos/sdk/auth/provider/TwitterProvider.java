@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.LayoutRes;
 import android.util.Log;
 
-import com.afinos.sdk.auth.IdpResponse;
+import com.afinos.sdk.auth.AuthCallback;
+import com.afinos.sdk.auth.AuthResponse;
 import com.afinos.sdk.auth.R;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.TwitterAuthProvider;
@@ -23,10 +23,10 @@ import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.models.User;
 
 
-public class TwitterProvider extends Callback<TwitterSession> implements IdpProvider {
+public class TwitterProvider extends Callback<TwitterSession> implements Provider {
     private static final String TAG = "TwitterProvider";
 
-    private IdpCallback mCallbackObject;
+    private AuthCallback<AuthResponse> mCallbackObject;
     private TwitterAuthClient mTwitterAuthClient;
 
     public TwitterProvider(Context context) {
@@ -34,7 +34,7 @@ public class TwitterProvider extends Callback<TwitterSession> implements IdpProv
         mTwitterAuthClient = new TwitterAuthClient();
     }
 
-    public static AuthCredential createAuthCredential(IdpResponse response) {
+    public static AuthCredential createAuthCredential(AuthResponse response) {
         if (!response.getProviderType().equalsIgnoreCase(TwitterAuthProvider.PROVIDER_ID)) {
             return null;
         }
@@ -66,18 +66,7 @@ public class TwitterProvider extends Callback<TwitterSession> implements IdpProv
     }
 
     @Override
-    public String getName(Context context) {
-        return context.getString(R.string.fui_idp_name_twitter);
-    }
-
-    @Override
-    @LayoutRes
-    public int getButtonLayout() {
-        return R.layout.fui_idp_button_twitter;
-    }
-
-    @Override
-    public void setAuthenticationCallback(IdpCallback callback) {
+    public void setAuthenticationCallback(AuthCallback<AuthResponse> callback) {
         mCallbackObject = callback;
     }
 
@@ -101,7 +90,7 @@ public class TwitterProvider extends Callback<TwitterSession> implements IdpProv
                     @Override
                     public void success(Result<User> result) {
                         User user = result.data;
-                        mCallbackObject.onSuccess(createIdpResponse(
+                        mCallbackObject.onSuccess(createSocialResponse(
                                 sessionResult.data,
                                 user.email,
                                 user.name,
@@ -121,11 +110,11 @@ public class TwitterProvider extends Callback<TwitterSession> implements IdpProv
         mCallbackObject.onFailure();
     }
 
-    private IdpResponse createIdpResponse(TwitterSession session,
-                                          String email,
-                                          String name,
-                                          Uri photoUri) {
-        return new IdpResponse.Builder(
+    private AuthResponse createSocialResponse(TwitterSession session,
+                                              String email,
+                                              String name,
+                                              Uri photoUri) {
+        return new AuthResponse.Builder(
                 new com.afinos.sdk.auth.User.Builder(TwitterAuthProvider.PROVIDER_ID, email)
                         .setName(name)
                         .setPhotoUri(photoUri)

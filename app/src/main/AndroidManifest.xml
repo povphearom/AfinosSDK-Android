@@ -40,9 +40,6 @@
         <activity
             android:name="com.afinos.uidemo.auth.AuthUiActivity"
             android:label="@string/name_auth_ui" />
-        <activity
-            android:name="com.afinos.uidemo.auth.SignedInActivity"
-            android:label="@string/name_auth_ui" />
 
         <!-- Storage UI demo-->
         <activity

@@ -30,7 +30,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.R;
 import com.afinos.sdk.auth.ui.HelperActivityBase;
 import com.afinos.sdk.auth.util.GoogleApiHelper;

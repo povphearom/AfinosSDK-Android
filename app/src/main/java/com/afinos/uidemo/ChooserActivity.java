@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.afinos.demo.R;
-import com.afinos.uidemo.auth.AuthUiActivity;
 import com.afinos.uidemo.database.ChatActivity;
 import com.afinos.uidemo.storage.ImageActivity;
 
@@ -51,7 +50,7 @@ public class ChooserActivity extends AppCompatActivity {
     private static class ActivityChooserAdapter extends RecyclerView.Adapter<ActivityStarterHolder> {
         private static final Class[] CLASSES = new Class[]{
                 ChatActivity.class,
-                AuthUiActivity.class,
+//                AuthUiActivity.class,
                 ImageActivity.class,
         };
 

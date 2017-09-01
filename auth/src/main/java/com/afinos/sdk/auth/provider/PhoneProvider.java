@@ -1,49 +1,92 @@
 package com.afinos.sdk.auth.provider;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 
-import com.afinos.sdk.auth.R;
-import com.afinos.sdk.auth.ui.FlowParameters;
-import com.afinos.sdk.auth.ui.phone.PhoneVerificationActivity;
+import com.afinos.sdk.auth.AuthCallback;
+import com.afinos.sdk.auth.AuthResponse;
+import com.afinos.sdk.auth.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 
-public class PhoneProvider implements Provider {
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
-    private static final int RC_PHONE_FLOW = 4;
+public class PhoneProvider implements NonSocialProvider {
+    public final static String PHONE = "phone";
+    private AuthCallback<AuthResponse> mAuthCallback;
 
-    private Activity mActivity;
-    private FlowParameters mFlowParameters;
+    private HashMap<String, Object> mParams;
 
-    public PhoneProvider(Activity activity, FlowParameters parameters) {
-        mActivity = activity;
-        mFlowParameters = parameters;
+    public PhoneProvider(HashMap<String, Object> parameters) {
+        mParams = parameters;
     }
 
-    @Override
-    public String getName(Context context) {
-        return context.getString(R.string.fui_provider_name_phone);
-    }
-
-    @Override
-    @LayoutRes
-    public int getButtonLayout() {
-        return R.layout.fui_provider_button_phone;
+    private AuthResponse createPhoneResponse(FirebaseUser user) {
+        return new AuthResponse.Builder(
+                new User.Builder(EmailAuthProvider.PROVIDER_ID, user.getEmail())
+                        .setName(user.getDisplayName())
+                        .setPhoneNumber(user.getPhoneNumber())
+                        .build()).build();
     }
 
     @Override
     public void startLogin(Activity activity) {
-        activity.startActivityForResult(
-                PhoneVerificationActivity.createIntent(activity, mFlowParameters, null),
-                RC_PHONE_FLOW);
+        mAuthCallback.onLoadingChange(true);
+        String phone = String.valueOf(mParams.get(PHONE));
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(phone,
+                60,
+                TimeUnit.SECONDS,
+                activity,
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(PhoneAuthCredential credential) {
+                        FirebaseAuth.getInstance()
+                                .signInWithCredential(credential)
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        mAuthCallback.onSuccess(createPhoneResponse(task.getResult()
+                                                .getUser()));
+                                        mAuthCallback.onLoadingChange(true);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        mAuthCallback.onLoadingChange(false);
+                                        mAuthCallback.onFailure();
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+                        mAuthCallback.onLoadingChange(false);
+                    }
+                });
+    }
+
+    @Override
+    public void startRegister(Activity activity) {
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RC_PHONE_FLOW && resultCode == Activity.RESULT_OK) {
-            mActivity.setResult(Activity.RESULT_OK, data);
-            mActivity.finish();
-        }
+    }
+
+    @Override
+    public void setAuthenticationCallback(AuthCallback<AuthResponse> callback) {
+        mAuthCallback = callback;
     }
 }

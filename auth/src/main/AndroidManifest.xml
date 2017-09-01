@@ -25,12 +25,6 @@
             android:value="${enableFbLogging}" />
 
         <activity
-            android:name="com.afinos.sdk.auth.KickoffActivity"
-            android:label=""
-            android:exported="false"
-            android:theme="@style/FirebaseUI.Transparent" />
-
-        <activity
             android:name="com.afinos.sdk.auth.ui.email.RecoverPasswordActivity"
             android:label="@string/fui_title_recover_password_activity"
             android:exported="false"/>
@@ -38,12 +32,6 @@
         <activity
             android:name="com.afinos.sdk.auth.ui.email.RegisterEmailActivity"
             android:label="@string/fui_sign_in_default"
-            android:exported="false"/>
-
-        <activity
-            android:name="com.afinos.sdk.auth.ui.phone.PhoneVerificationActivity"
-            android:label="@string/fui_sign_in_with_phone_number"
-            android:windowSoftInputMode="stateAlwaysVisible"
             android:exported="false"/>
 
         <activity

@@ -17,16 +17,12 @@ package com.afinos.sdk.auth.ui.idp;
 import android.content.Intent;
 
 import com.afinos.sdk.auth.BuildConfig;
-import com.afinos.sdk.auth.IdpResponse;
-import com.afinos.sdk.auth.User;
 import com.afinos.sdk.auth.testhelpers.AuthHelperShadow;
 import com.afinos.sdk.auth.testhelpers.AutoCompleteTask;
 import com.afinos.sdk.auth.testhelpers.FakeAuthResult;
 import com.afinos.sdk.auth.testhelpers.FakeProviderQueryResult;
 import com.afinos.sdk.auth.testhelpers.TestConstants;
 import com.afinos.sdk.auth.testhelpers.TestHelper;
-import com.afinos.sdk.auth.ui.AppCompatBase;
-import com.afinos.sdk.auth.ui.FlowParameters;
 import com.afinos.sdk.auth.ui.ProgressDialogHolder;
 import com.afinos.sdk.auth.ui.accountlink.WelcomeBackIdpPrompt;
 import com.afinos.sdk.auth.ui.accountlink.WelcomeBackPasswordPrompt;

@@ -15,28 +15,23 @@
 package com.afinos.sdk.auth.provider;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.util.Log;
 
+import com.afinos.sdk.auth.AuthCallback;
+import com.afinos.sdk.auth.AuthResponse;
+import com.afinos.sdk.auth.User;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookRequestError;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.afinos.sdk.auth.Auth;
-import com.afinos.sdk.auth.IdpResponse;
-import com.afinos.sdk.auth.R;
-import com.afinos.sdk.auth.User;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 
@@ -44,10 +39,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
-public class FacebookProvider implements IdpProvider, FacebookCallback<LoginResult> {
+public class FacebookProvider implements Provider, FacebookCallback<LoginResult> {
     private static final String TAG = "FacebookProvider";
+    public static final String SCOPES = "scopes";
     private static final String EMAIL = "email";
     private static final String PUBLIC_PROFILE = "public_profile";
 
@@ -55,34 +53,23 @@ public class FacebookProvider implements IdpProvider, FacebookCallback<LoginResu
 
     private final List<String> mScopes;
     // DO NOT USE DIRECTLY: see onSuccess(String, LoginResult) and onFailure(Bundle) below
-    private IdpCallback mCallbackObject;
+    private AuthCallback<AuthResponse> mCallbackObject;
 
-    public FacebookProvider(Auth.IdpConfig idpConfig, @StyleRes int theme) {
-        List<String> scopes = idpConfig.getScopes();
+    public FacebookProvider(HashMap<String, Object> params) {
+        String[] scopes = (String[]) params.get(SCOPES);
         if (scopes == null) {
             mScopes = new ArrayList<>();
         } else {
-            mScopes = scopes;
+            mScopes = Arrays.asList(scopes);
         }
-        FacebookSdk.setWebDialogTheme(theme);
+//        FacebookSdk.setWebDialogTheme(theme);
     }
 
-    public static AuthCredential createAuthCredential(IdpResponse response) {
+    public static AuthCredential createAuthCredential(AuthResponse response) {
         if (!response.getProviderType().equals(FacebookAuthProvider.PROVIDER_ID)) {
             return null;
         }
         return FacebookAuthProvider.getCredential(response.getIdpToken());
-    }
-
-    @Override
-    public String getName(Context context) {
-        return context.getString(R.string.fui_idp_name_facebook);
-    }
-
-    @Override
-    @LayoutRes
-    public int getButtonLayout() {
-        return R.layout.fui_idp_button_facebook;
     }
 
     @Override
@@ -107,7 +94,7 @@ public class FacebookProvider implements IdpProvider, FacebookCallback<LoginResu
     }
 
     @Override
-    public void setAuthenticationCallback(IdpCallback callback) {
+    public void setAuthenticationCallback(AuthCallback<AuthResponse> callback) {
         mCallbackObject = callback;
     }
 
@@ -127,7 +114,8 @@ public class FacebookProvider implements IdpProvider, FacebookCallback<LoginResu
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         FacebookRequestError requestError = response.getError();
                         if (requestError != null) {
-                            Log.e(TAG, "Received Facebook error: " + requestError.getErrorMessage());
+                            Log.e(TAG,
+                                    "Received Facebook error: " + requestError.getErrorMessage());
                             onFailure();
                             return;
                         }
@@ -137,6 +125,9 @@ public class FacebookProvider implements IdpProvider, FacebookCallback<LoginResu
                         } else {
                             String email = null;
                             String name = null;
+                            String lastName = null;
+                            String firstName = null;
+                            String gender = null;
                             Uri photoUri = null;
 
                             try {
@@ -148,18 +139,32 @@ public class FacebookProvider implements IdpProvider, FacebookCallback<LoginResu
                                 name = object.getString("name");
                             } catch (JSONException ignored) {}
                             try {
+                                lastName = object.getString("last_name");
+                            } catch (JSONException ignored) {}
+                            try {
+                                firstName = object.getString("first_name");
+                            } catch (JSONException ignored) {}
+                            try {
+                                gender = object.getString("gender");
+                            } catch (JSONException ignored) {}
+                            try {
                                 photoUri = Uri.parse(object.getJSONObject("picture")
                                         .getJSONObject("data")
                                         .getString("url"));
                             } catch (JSONException ignored) {}
-
-                            onSuccess(loginResult, email, name, photoUri);
+                            onSuccess(loginResult,
+                                    email,
+                                    name,
+                                    lastName,
+                                    firstName,
+                                    gender,
+                                    photoUri);
                         }
                     }
                 });
 
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,picture");
+        parameters.putString("fields", "id,name,email,gender,birthday,first_name,last_name");
         request.setParameters(parameters);
         request.executeAsync();
     }
@@ -178,11 +183,17 @@ public class FacebookProvider implements IdpProvider, FacebookCallback<LoginResu
     private void onSuccess(LoginResult loginResult,
                            @Nullable String email,
                            String name,
+                           String lastName,
+                           String firstName,
+                           String gender,
                            Uri photoUri) {
         gcCallbackManager();
-        mCallbackObject.onSuccess(new IdpResponse.Builder(
+        mCallbackObject.onSuccess(new AuthResponse.Builder(
                 new User.Builder(FacebookAuthProvider.PROVIDER_ID, email)
                         .setName(name)
+                        .setLastName(lastName)
+                        .setFirstName(firstName)
+                        .setGender(gender)
                         .setPhotoUri(photoUri)
                         .build())
                 .setToken(loginResult.getAccessToken().getToken())
@@ -195,14 +206,6 @@ public class FacebookProvider implements IdpProvider, FacebookCallback<LoginResu
     }
 
     private void gcCallbackManager() {
-        // sCallbackManager must be static to prevent it from being destroyed if the activity
-        // containing FacebookProvider dies.
-        // In startLogin(Activity), LoginManager#registerCallback(CallbackManager, FacebookCallback)
-        // stores the FacebookCallback parameter--in this case a FacebookProvider instance--into
-        // a HashMap in the CallbackManager instance, sCallbackManager.
-        // Because FacebookProvider which contains an instance of an activity, mCallbackObject,
-        // is contained in sCallbackManager, that activity will not be garbage collected.
-        // Thus, we have leaked an Activity.
         sCallbackManager = null;
     }
 }

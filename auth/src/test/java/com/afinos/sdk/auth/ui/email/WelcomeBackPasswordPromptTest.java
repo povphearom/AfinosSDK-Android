@@ -21,9 +21,7 @@ import android.widget.EditText;
 
 import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.BuildConfig;
-import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.R;
-import com.afinos.sdk.auth.User;
 import com.afinos.sdk.auth.testhelpers.AuthHelperShadow;
 import com.afinos.sdk.auth.testhelpers.AutoCompleteTask;
 import com.afinos.sdk.auth.testhelpers.FakeAuthResult;

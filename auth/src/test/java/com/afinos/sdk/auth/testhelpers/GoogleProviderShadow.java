@@ -17,9 +17,8 @@ package com.afinos.sdk.auth.testhelpers;
 import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
 
-import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.provider.GoogleProvider;
-import com.afinos.sdk.auth.provider.IdpProvider.IdpCallback;
+import com.afinos.sdk.auth.provider.NonSocialProvider.IdpCallback;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import org.robolectric.annotation.Implementation;

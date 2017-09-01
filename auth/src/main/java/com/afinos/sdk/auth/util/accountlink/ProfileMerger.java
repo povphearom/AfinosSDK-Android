@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.afinos.sdk.auth.IdpResponse;
-import com.afinos.sdk.auth.User;
 import com.afinos.sdk.auth.ui.TaskFailureLogger;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;

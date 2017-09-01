@@ -12,7 +12,10 @@
  * limitations under the License.
  */
 
-/**
- * Activities which implement the AuthUI authentication flow.
- */
-package com.afinos.sdk.auth.ui;
+package com.afinos.sdk.auth.provider;
+
+import android.app.Activity;
+
+public interface NonSocialProvider extends Provider {
+    void startRegister(Activity activity);
+}

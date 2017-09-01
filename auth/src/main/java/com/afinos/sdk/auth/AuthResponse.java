@@ -31,18 +31,18 @@ import com.google.firebase.auth.TwitterAuthProvider;
 /**
  * A container that encapsulates the result of authenticating with an Identity Provider.
  */
-public class IdpResponse implements Parcelable {
+public class AuthResponse implements Parcelable {
     private final User mUser;
     private final String mToken;
     private final String mSecret;
 
     private final int mErrorCode;
 
-    private IdpResponse(int errorCode) {
+    private AuthResponse(int errorCode) {
         this(null, null, null, errorCode);
     }
 
-    private IdpResponse(User user, String token, String secret, int errorCode) {
+    private AuthResponse(User user, String token, String secret, int errorCode) {
         mUser = user;
         mToken = token;
         mSecret = secret;
@@ -50,13 +50,13 @@ public class IdpResponse implements Parcelable {
     }
 
     /**
-     * Extract the {@link IdpResponse} from the flow's result intent.
+     * Extract the {@link AuthResponse} from the flow's result intent.
      *
      * @param resultIntent The intent which {@code onActivityResult} was called with.
      * @return The IdpResponse containing the token(s) from signing in with the Idp
      */
     @Nullable
-    public static IdpResponse fromResultIntent(Intent resultIntent) {
+    public static AuthResponse fromResultIntent(Intent resultIntent) {
         if (resultIntent != null) {
             return resultIntent.getParcelableExtra(ExtraConstants.EXTRA_IDP_RESPONSE);
         } else {
@@ -66,7 +66,7 @@ public class IdpResponse implements Parcelable {
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     public static Intent getErrorCodeIntent(int errorCode) {
-        return new IdpResponse(errorCode).toIntent();
+        return new AuthResponse(errorCode).toIntent();
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
@@ -140,10 +140,10 @@ public class IdpResponse implements Parcelable {
         dest.writeInt(mErrorCode);
     }
 
-    public static final Creator<IdpResponse> CREATOR = new Creator<IdpResponse>() {
+    public static final Creator<AuthResponse> CREATOR = new Creator<AuthResponse>() {
         @Override
-        public IdpResponse createFromParcel(Parcel in) {
-            return new IdpResponse(
+        public AuthResponse createFromParcel(Parcel in) {
+            return new AuthResponse(
                     in.<User>readParcelable(User.class.getClassLoader()),
                     in.readString(),
                     in.readString(),
@@ -152,8 +152,8 @@ public class IdpResponse implements Parcelable {
         }
 
         @Override
-        public IdpResponse[] newArray(int size) {
-            return new IdpResponse[size];
+        public AuthResponse[] newArray(int size) {
+            return new AuthResponse[size];
         }
     };
 
@@ -177,7 +177,7 @@ public class IdpResponse implements Parcelable {
             return this;
         }
 
-        public IdpResponse build() {
+        public AuthResponse build() {
             String providerId = mUser.getProviderId();
             if ((providerId.equalsIgnoreCase(GoogleAuthProvider.PROVIDER_ID)
                     || providerId.equalsIgnoreCase(FacebookAuthProvider.PROVIDER_ID)
@@ -192,7 +192,7 @@ public class IdpResponse implements Parcelable {
                         "Secret cannot be null when using the Twitter provider.");
             }
 
-            return new IdpResponse(mUser, mToken, mSecret, Activity.RESULT_OK);
+            return new AuthResponse(mUser, mToken, mSecret, Activity.RESULT_OK);
         }
     }
 }

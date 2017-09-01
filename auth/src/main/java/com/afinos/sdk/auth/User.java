@@ -21,6 +21,9 @@ public class User implements Parcelable {
                     in.readString(),
                     in.readString(),
                     in.readString(),
+                    in.readString(),
+                    in.readString(),
+                    in.readString(),
                     in.<Uri>readParcelable(Uri.class.getClassLoader()));
         }
 
@@ -34,13 +37,26 @@ public class User implements Parcelable {
     private final String mEmail;
     private final String mPhoneNumber;
     private final String mName;
+    private String mLastName;
+    private String mFirstName;
+    private String mGender;
     private final Uri mPhotoUri;
 
-    private User(String providerId, String email, String phoneNumber, String name, Uri photoUri) {
+    private User(String providerId,
+                 String email,
+                 String phoneNumber,
+                 String name,
+                 String lastName,
+                 String firstName,
+                 String gender,
+                 Uri photoUri) {
         mProviderId = providerId;
         mEmail = email;
         mPhoneNumber = phoneNumber;
         mName = name;
+        mLastName = lastName;
+        mFirstName = firstName;
+        mGender = gender;
         mPhotoUri = photoUri;
     }
 
@@ -74,6 +90,21 @@ public class User implements Parcelable {
     }
 
     @Nullable
+    public String getLastName() {
+        return mLastName;
+    }
+
+    @Nullable
+    public String getFirstName() {
+        return mFirstName;
+    }
+
+    @Nullable
+    public String getGender() {
+        return mGender;
+    }
+
+    @Nullable
     public Uri getPhotoUri() {
         return mPhotoUri;
     }
@@ -88,6 +119,9 @@ public class User implements Parcelable {
         return mProviderId.equals(user.mProviderId)
                 && (mEmail == null ? user.mEmail == null : mEmail.equals(user.mEmail))
                 && (mName == null ? user.mName == null : mName.equals(user.mName))
+                && (mLastName == null ? user.mLastName == null : mLastName.equals(user.mLastName))
+                && (mFirstName == null ? user.mFirstName == null : mFirstName.equals(user.mFirstName))
+                && (mGender == null ? user.mGender == null : mGender.equals(user.mGender))
                 && (mPhotoUri == null ? user.mPhotoUri == null : mPhotoUri.equals(user.mPhotoUri));
     }
 
@@ -96,6 +130,9 @@ public class User implements Parcelable {
         int result = mProviderId.hashCode();
         result = 31 * result + (mEmail == null ? 0 : mEmail.hashCode());
         result = 31 * result + (mName == null ? 0 : mName.hashCode());
+        result = 31 * result + (mLastName == null ? 0 : mLastName.hashCode());
+        result = 31 * result + (mFirstName == null ? 0 : mFirstName.hashCode());
+        result = 31 * result + (mGender == null ? 0 : mGender.hashCode());
         result = 31 * result + (mPhotoUri == null ? 0 : mPhotoUri.hashCode());
         return result;
     }
@@ -106,6 +143,9 @@ public class User implements Parcelable {
                 "mProviderId='" + mProviderId + '\'' +
                 ", mEmail='" + mEmail + '\'' +
                 ", mName='" + mName + '\'' +
+                ", mLastName='" + mLastName + '\'' +
+                ", mFirstName='" + mFirstName + '\'' +
+                ", mGender='" + mGender + '\'' +
                 ", mPhotoUri=" + mPhotoUri +
                 '}';
     }
@@ -129,6 +169,9 @@ public class User implements Parcelable {
         private String mEmail;
         private String mPhoneNumber;
         private String mName;
+        private String mLastName;
+        private String mFirstName;
+        private String mGender;
         private Uri mPhotoUri;
 
         public Builder(@Auth.SupportedProvider @NonNull String providerId,
@@ -147,13 +190,35 @@ public class User implements Parcelable {
             return this;
         }
 
+        public Builder setFirstName(String firstName) {
+            mFirstName = firstName;
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            mLastName = lastName;
+            return this;
+        }
+
+        public Builder setGender(String gender) {
+            mGender = gender;
+            return this;
+        }
+
         public Builder setPhotoUri(Uri photoUri) {
             mPhotoUri = photoUri;
             return this;
         }
 
         public User build() {
-            return new User(mProviderId, mEmail, mPhoneNumber, mName, mPhotoUri);
+            return new User(mProviderId,
+                    mEmail,
+                    mPhoneNumber,
+                    mName,
+                    mLastName,
+                    mFirstName,
+                    mGender,
+                    mPhotoUri);
         }
     }
 }

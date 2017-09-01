@@ -19,9 +19,8 @@ import android.support.annotation.StyleRes;
 
 import com.facebook.login.LoginResult;
 import com.afinos.sdk.auth.Auth;
-import com.afinos.sdk.auth.IdpResponse;
 import com.afinos.sdk.auth.provider.FacebookProvider;
-import com.afinos.sdk.auth.provider.IdpProvider.IdpCallback;
+import com.afinos.sdk.auth.provider.NonSocialProvider.IdpCallback;
 import com.google.firebase.auth.FacebookAuthProvider;
 
 import org.robolectric.annotation.Implementation;

@@ -31,7 +31,6 @@ import com.afinos.sdk.auth.testhelpers.LoginManagerShadow;
 import com.afinos.sdk.auth.testhelpers.TestConstants;
 import com.afinos.sdk.auth.testhelpers.TestHelper;
 import com.afinos.sdk.auth.ui.email.RegisterEmailActivity;
-import com.afinos.sdk.auth.ui.phone.PhoneVerificationActivity;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.GoogleAuthProvider;

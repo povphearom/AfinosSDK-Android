@@ -19,7 +19,6 @@ import com.afinos.sdk.auth.Auth.SignInIntentBuilder;
 import com.afinos.sdk.auth.testhelpers.TestConstants;
 import com.afinos.sdk.auth.testhelpers.TestHelper;
 import com.afinos.sdk.auth.ui.ExtraConstants;
-import com.afinos.sdk.auth.ui.FlowParameters;
 import com.google.firebase.FirebaseApp;
 
 import org.junit.Before;

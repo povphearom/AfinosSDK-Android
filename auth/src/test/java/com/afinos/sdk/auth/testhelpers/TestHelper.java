@@ -18,8 +18,6 @@ import android.content.Context;
 
 import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.Auth.IdpConfig;
-import com.afinos.sdk.auth.IdpResponse;
-import com.afinos.sdk.auth.ui.FlowParameters;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseUser;

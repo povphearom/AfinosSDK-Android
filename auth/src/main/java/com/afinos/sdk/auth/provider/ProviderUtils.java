@@ -18,8 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.afinos.sdk.auth.IdpResponse;
-import com.afinos.sdk.auth.ui.TaskFailureLogger;
+import com.afinos.sdk.auth.AuthResponse;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -40,14 +39,14 @@ public final class ProviderUtils {
     }
 
     @Nullable
-    public static AuthCredential getAuthCredential(IdpResponse idpResponse) {
-        switch (idpResponse.getProviderType()) {
+    public static AuthCredential getAuthCredential(AuthResponse authResponse) {
+        switch (authResponse.getProviderType()) {
             case GoogleAuthProvider.PROVIDER_ID:
-                return GoogleProvider.createAuthCredential(idpResponse);
+                return GoogleProvider.createAuthCredential(authResponse);
             case FacebookAuthProvider.PROVIDER_ID:
-                return FacebookProvider.createAuthCredential(idpResponse);
+                return FacebookProvider.createAuthCredential(authResponse);
             case TwitterAuthProvider.PROVIDER_ID:
-                return TwitterProvider.createAuthCredential(idpResponse);
+                return TwitterProvider.createAuthCredential(authResponse);
             default:
                 return null;
         }
@@ -59,8 +58,7 @@ public final class ProviderUtils {
         }
 
         return auth.fetchProvidersForEmail(email)
-                .addOnFailureListener(
-                        new TaskFailureLogger(TAG, "Error fetching providers for email"))
+//                .addOnFailureListener(new TaskFailureLogger(TAG, "Error fetching providers for email"))
                 .continueWith(new Continuation<ProviderQueryResult, String>() {
                     @Override
                     public String then(@NonNull Task<ProviderQueryResult> task) throws Exception {

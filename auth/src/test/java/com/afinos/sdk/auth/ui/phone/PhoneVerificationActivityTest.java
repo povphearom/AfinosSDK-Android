@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.afinos.sdk.auth.Auth;
 import com.afinos.sdk.auth.BuildConfig;
-import com.afinos.sdk.auth.FirebaseAuthError;
 import com.afinos.sdk.auth.R;
 import com.afinos.sdk.auth.testhelpers.AuthHelperShadow;
 import com.afinos.sdk.auth.testhelpers.AutoCompleteTask;

@@ -1,48 +1,95 @@
 package com.afinos.sdk.auth.provider;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 
-import com.afinos.sdk.auth.R;
-import com.afinos.sdk.auth.ui.FlowParameters;
-import com.afinos.sdk.auth.ui.email.RegisterEmailActivity;
+import com.afinos.sdk.auth.AuthCallback;
+import com.afinos.sdk.auth.AuthResponse;
+import com.afinos.sdk.auth.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-public class EmailProvider implements Provider {
-    private static final int RC_EMAIL_FLOW = 2;
+import java.util.HashMap;
 
-    private Activity mActivity;
-    private FlowParameters mFlowParameters;
+public class EmailProvider implements NonSocialProvider {
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
 
-    public EmailProvider(Activity activity, FlowParameters flowParameters) {
-        mActivity = activity;
-        mFlowParameters = flowParameters;
+    private HashMap<String, Object> mParams;
+
+    private AuthCallback<AuthResponse> mAuthCallback;
+
+    public EmailProvider(HashMap<String, Object> params) {
+        mParams = params;
     }
 
-    @Override
-    public String getName(Context context) {
-        return context.getString(R.string.fui_provider_name_email);
-    }
-
-    @Override
-    @LayoutRes
-    public int getButtonLayout() {
-        return R.layout.fui_provider_button_email;
+    private AuthResponse createEmailResponse(FirebaseUser user) {
+        return new AuthResponse.Builder(
+                new User.Builder(EmailAuthProvider.PROVIDER_ID, user.getEmail())
+                        .setName(user.getDisplayName())
+                        .setPhoneNumber(user.getPhoneNumber())
+                        .build()).build();
     }
 
     @Override
     public void startLogin(Activity activity) {
-        activity.startActivityForResult(
-                RegisterEmailActivity.createIntent(activity, mFlowParameters),
-                RC_EMAIL_FLOW);
+        mAuthCallback.onLoadingChange(true);
+        String username = String.valueOf(mParams.get(USERNAME));
+        String password = String.valueOf(mParams.get(PASSWORD));
+        AuthCredential authCredential = EmailAuthProvider.getCredential(username, password);
+        FirebaseAuth.getInstance()
+                .signInWithCredential(authCredential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        mAuthCallback.onSuccess(createEmailResponse(task.getResult().getUser()));
+                        mAuthCallback.onLoadingChange(false);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        mAuthCallback.onLoadingChange(false);
+                        mAuthCallback.onFailure();
+                    }
+                });
+    }
+
+    @Override
+    public void startRegister(Activity activity) {
+        mAuthCallback.onLoadingChange(true);
+        String username = String.valueOf(mParams.get(USERNAME));
+        String password = String.valueOf(mParams.get(PASSWORD));
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(username, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        mAuthCallback.onSuccess(createEmailResponse(task.getResult().getUser()));
+                        mAuthCallback.onLoadingChange(false);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        mAuthCallback.onLoadingChange(false);
+                        mAuthCallback.onFailure();
+                    }
+                });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RC_EMAIL_FLOW && resultCode == Activity.RESULT_OK) {
-            mActivity.setResult(Activity.RESULT_OK, data);
-            mActivity.finish();
-        }
+    }
+
+    @Override
+    public void setAuthenticationCallback(AuthCallback<AuthResponse> callback) {
+        mAuthCallback = callback;
     }
 }

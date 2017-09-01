@@ -15,18 +15,17 @@
 package com.afinos.sdk.auth.provider;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.afinos.sdk.auth.Auth.IdpConfig;
-import com.afinos.sdk.auth.IdpResponse;
+import com.afinos.sdk.auth.AuthCallback;
+import com.afinos.sdk.auth.AuthResponse;
 import com.afinos.sdk.auth.R;
 import com.afinos.sdk.auth.User;
 import com.afinos.sdk.auth.util.GoogleApiHelper;
@@ -42,23 +41,26 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class GoogleProvider implements IdpProvider, GoogleApiClient.OnConnectionFailedListener {
+import java.util.HashMap;
+
+public class GoogleProvider implements Provider, GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "GoogleProvider";
+
+    private static final String EMAIL = "email";
+    private static final String SCOPES = "scopes";
+
     private static final int RC_SIGN_IN = 20;
 
     private GoogleApiClient mGoogleApiClient;
     private FragmentActivity mActivity;
-    private IdpConfig mIdpConfig;
-    private IdpCallback mIdpCallback;
+    private HashMap<String, Object> mParams;
+    private AuthCallback<AuthResponse> mIdpCallback;
     private boolean mSpecificAccount;
 
-    public GoogleProvider(FragmentActivity activity, IdpConfig idpConfig) {
-        this(activity, idpConfig, null);
-    }
-
-    public GoogleProvider(FragmentActivity activity, IdpConfig idpConfig, @Nullable String email) {
+    public GoogleProvider(AppCompatActivity activity, HashMap<String, Object> params) {
         mActivity = activity;
-        mIdpConfig = idpConfig;
+        mParams = params;
+        String email = String.valueOf(params.get(EMAIL));
         mSpecificAccount = !TextUtils.isEmpty(email);
         mGoogleApiClient = new GoogleApiClient.Builder(mActivity)
                 .enableAutoManage(mActivity, GoogleApiHelper.getSafeAutoManageId(), this)
@@ -66,7 +68,7 @@ public class GoogleProvider implements IdpProvider, GoogleApiClient.OnConnection
                 .build();
     }
 
-    public static AuthCredential createAuthCredential(IdpResponse response) {
+    public static AuthCredential createAuthCredential(AuthResponse response) {
         return GoogleAuthProvider.getCredential(response.getIdpToken(), null);
     }
 
@@ -78,8 +80,9 @@ public class GoogleProvider implements IdpProvider, GoogleApiClient.OnConnection
                         .requestEmail()
                         .requestIdToken(clientId);
 
+        String[] scopes = (String[]) mParams.get(SCOPES);
         // Add additional scopes
-        for (String scopeString : mIdpConfig.getScopes()) {
+        for (String scopeString : scopes) {
             builder.requestScopes(new Scope(scopeString));
         }
 
@@ -91,18 +94,7 @@ public class GoogleProvider implements IdpProvider, GoogleApiClient.OnConnection
     }
 
     @Override
-    public String getName(Context context) {
-        return context.getString(R.string.fui_idp_name_google);
-    }
-
-    @Override
-    @LayoutRes
-    public int getButtonLayout() {
-        return R.layout.fui_idp_button_google;
-    }
-
-    @Override
-    public void setAuthenticationCallback(IdpCallback callback) {
+    public void setAuthenticationCallback(AuthCallback<AuthResponse> callback) {
         mIdpCallback = callback;
     }
 
@@ -113,10 +105,12 @@ public class GoogleProvider implements IdpProvider, GoogleApiClient.OnConnection
         }
     }
 
-    private IdpResponse createIdpResponse(GoogleSignInAccount account) {
-        return new IdpResponse.Builder(
+    private AuthResponse createSocialResponse(GoogleSignInAccount account) {
+        return new AuthResponse.Builder(
                 new User.Builder(GoogleAuthProvider.PROVIDER_ID, account.getEmail())
                         .setName(account.getDisplayName())
+                        .setLastName(account.getFamilyName())
+                        .setFirstName(account.getGivenName())
                         .setPhotoUri(account.getPhotoUrl())
                         .build())
                 .setToken(account.getIdToken())
@@ -137,7 +131,7 @@ public class GoogleProvider implements IdpProvider, GoogleApiClient.OnConnection
                                         result.getSignInAccount().getEmail()),
                                 Toast.LENGTH_SHORT).show();
                     }
-                    mIdpCallback.onSuccess(createIdpResponse(result.getSignInAccount()));
+                    mIdpCallback.onSuccess(createSocialResponse(result.getSignInAccount()));
                 } else {
                     onError(result);
                 }

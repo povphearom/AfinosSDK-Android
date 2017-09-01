@@ -12,24 +12,8 @@
  * limitations under the License.
  */
 
-package com.afinos.sdk.auth.ui;
+package com.afinos.sdk.auth;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
+public class AuthManager {
 
-import com.google.android.gms.tasks.OnFailureListener;
-
-public class TaskFailureLogger implements OnFailureListener {
-    private String mTag;
-    private String mMessage;
-
-    public TaskFailureLogger(@NonNull String tag, @NonNull String message) {
-        mTag = tag;
-        mMessage = message;
-    }
-
-    @Override
-    public void onFailure(@NonNull Exception e) {
-        Log.w(mTag, mMessage, e);
-    }
 }
